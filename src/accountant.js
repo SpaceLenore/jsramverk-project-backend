@@ -1,3 +1,4 @@
+const bcrypt        = require('bcryptjs');
 const auth          = require('./authenticator');
 const dbHandler     = require('../db/handler');
 const saltRounds    = 10;
@@ -33,7 +34,7 @@ const createAccount = (user) => {
         })
 }
 
-const loginAccount = (user) => {
+const loginAccount = async (user) => {
     let response = {
         error: false,
         token: null
@@ -44,18 +45,21 @@ const loginAccount = (user) => {
         return response;
     }
 
-    return bcrypt.hash(user.password, saltRounds)
-        .then(async (hash) => {
-            try {
-                let getPassword = await auth.fetchOne("SELECT password FROM users WHERE email = ?", [user.email]);
-                if (getPassword === hash) {
-                    return
-                } else {
-                    response.error = 400;
-                    return response;
-                }
-            } catch (e) {
+    let getPassword = await dbHandler.fetchOne("SELECT password FROM users WHERE email = ?", [user.email]);
 
+    if (!getPassword) {
+        response.error = 400;
+        return response;
+    }
+
+    return bcrypt.compare(user.password, getPassword.password)
+        .then(async (res) => {
+            if (res) {
+                response.token = await auth.generateToken(user.email);
+                return response;
+            } else {
+                response.error = 400;
+                return response;
             }
         })
         .catch((err) => {
@@ -65,5 +69,6 @@ const loginAccount = (user) => {
 };
 
 module.exports = {
-    createAccount
+    createAccount,
+    loginAccount
 }

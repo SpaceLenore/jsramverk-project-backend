@@ -15,7 +15,15 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+    let loginUser = await accountant.loginAccount(req.body);
 
+    if (!loginUser.error) {
+        res.status(200).json({
+            token: loginUser.token
+        });
+    } else {
+        res.status(loginUser.error).send();
+    }
 });
 
 module.exports = router;

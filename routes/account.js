@@ -1,5 +1,5 @@
 const express       = require('express');
-const handler    = require('../db/handler');
+const handler       = require('../db/handler');
 const router        = express.Router();
 
 router.get("/wallets", async (req, res, next) => {

@@ -25,8 +25,6 @@ const createAccount = (user) => {
                 response.error = 500;
                 return response;
             }
-            response.token = "mytoken";
-            return token;
         })
         .catch((err) => {
             response.error = 500;

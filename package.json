@@ -6,7 +6,8 @@
   "scripts": {
     "dbconf": "./db/createDB.bash data",
     "dev": "JWT_SECRET=examplesecret nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "bash db/createDB.bash test",
+    "test": "NODE_ENV='test' JWT_SECRET='testenvsecret' nyc --reporter=html --reporter=clover -x 'tests/' mocha --timeout 10000 --recursive tests/"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,10 @@
     "sqlite3": "^4.1.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.2.2",
+    "nodemon": "^1.19.4",
+    "nyc": "^14.1.1"
   }
 }

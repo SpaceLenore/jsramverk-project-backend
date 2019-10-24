@@ -1,2 +1,4 @@
 /node_modules
 *.sqlite
+.nyc_output
+coverage

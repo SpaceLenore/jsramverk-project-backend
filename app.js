@@ -2,7 +2,8 @@ const express       = require("express");
 const cors          = require('cors');
 const morgan        = require('morgan');
 const bodyParser    = require("body-parser");
-const login          = require('./routes/login');
+const jwtmiddle     = require("./middleware/jwtauth");
+const login         = require('./routes/login');
 const app           = express();
 const port          = 1337;
 
@@ -19,6 +20,12 @@ app.use(bodyParser.urlencoded({ extended: true })); // application/x-www-form-ur
 
 // Routers
 app.use('/', login);
+
+// Authentication middleware
+app.use('/', jwtmiddle);
+
+// Routes requiring Authentication
+
 
 // Add routes for 404 and error handling
 // Catch 404 and forward to error handler

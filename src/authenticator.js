@@ -18,7 +18,7 @@ const validateToken = (token) => {
             if (err != null) {
                 resolve(false);
             }
-            resolve(true);
+            resolve(decoded);
         });
 
     });

@@ -1,9 +1,11 @@
-const authenticatior = require('../src/authenticator');
+const authenticator = require('../src/authenticator');
 
 // Require authentication via JWT
 const verifyJwt = async (req, res, next) => {
     if (req.headers.authorization) {
-        if (await authenticator.validateToken(req.headers.authorization)) {
+        let data = await authenticator.validateToken(req.headers.authorization);
+        if (data) {
+            req.decoded = data;
             next();
             return true;
         }

@@ -85,7 +85,7 @@ describe('Testing routers \'login\' and \'account\'', () => {
                 expect(res.status).to.be.equal(401);
             });
         });
-        it('200 OK get (empty) wallets', () => {
+        it('200 OK get wallets', () => {
             chai.request(server)
             .get('/acc/wallets')
             .set('Authorization', debugJWT)
@@ -93,7 +93,6 @@ describe('Testing routers \'login\' and \'account\'', () => {
                 expect(err).to.be.null;
                 expect(res.status).to.be.equal(200);
                 expect(res.body).to.be.an('array');
-                expect(res.body.length).to.be.equal(0);
             });
         });
         it('200 OK get funds', () => {

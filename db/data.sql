@@ -16,6 +16,6 @@ CREATE TABLE IF NOT EXISTS stonks (
 );
 
 INSERT INTO stonks (name, description, shares) VALUES
-("TechCo", "Tech company that likes to sell your data.", 100),
+("techco", "Tech company that likes to sell your data.", 100),
 ("dbwebb", "Små dbwebbisar hoppar runt bland löven och investerar", 100),
-("EvilCo", "EvilCo sells chemical weapons and other questionable goods but hey, they make a lot of money.", 100);
+("evilco", "EvilCo sells chemical weapons and other questionable goods but hey, they make a lot of money.", 100);

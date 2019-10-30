@@ -49,12 +49,23 @@ const buyStonks = async (buying) => {
         return response;
     }
 
-    let diffAmount = amountLeft - buying.amount;
+    let userMoney = await handler.fetchOne("SELECT funds FROM users WHERE email = ?", [buying.buyer])
+    .then((res) => {
+        return res.funds;
+    })
+    .catch((err) => {
+        return 0;
+    });
+
+    if (userMoney < buying.prize) {
+        response.error = 400;
+        return response;
+    }
 
     try {
-        await handler.exec("UPDATE stonks SET shares=? WHERE id = ?", [diffAmount, buying.id]);
+        await handler.exec("UPDATE stonks SET shares=shares-? WHERE id = ?", [buying.amount, buying.id]);
         await handler.exec("UPDATE users SET " + companyName + "= " + companyName + "+? WHERE email = ?;", [buying.amount, buying.buyer]);
-        await handler.exec("UPDATE users SET funds = funds - ? where email = ?", [buying.price, buying.buyer]);
+        await handler.exec("UPDATE users SET funds = funds - ? where email = ?", [buying.price * buying.amount, buying.buyer]);
         return response;
     } catch (e) {
         response.error = 500;

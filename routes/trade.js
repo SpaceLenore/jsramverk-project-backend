@@ -25,7 +25,8 @@ router.post("/buy", async (req, res) => {
 
 
 router.post("/sell", async (req, res) => {
-    let sell = await trade.sellStonks(res.body);
+    req.body.seller = req.decoded.email;
+    let sell = await trade.sellStonks(req.body);
 
     if (!sell.error) {
         res.status(202).send();
